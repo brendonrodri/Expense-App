@@ -19,17 +19,21 @@ class ExpensesApp extends StatelessWidget {
           secondary: Colors.amber,
         ),
         textTheme: tema.textTheme.copyWith(
-          titleLarge: const TextStyle(
-            fontFamily: 'OpenSans',
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-          ),
-        ),
+            titleLarge: const TextStyle(
+              fontFamily: 'OpenSans',
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+            labelSmall: const TextStyle(
+                fontFamily: 'OpenSans',
+                fontSize: 14,
+                fontWeight: FontWeight.normal,
+                color: Color.fromARGB(255, 139, 34, 158))),
         appBarTheme: const AppBarTheme(
           titleTextStyle: TextStyle(
             fontFamily: 'OpenSans',
-            fontSize: 20,
+            fontSize: 22,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -44,20 +48,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final _transactions = [
-    Transaction(
-      id: 't1',
-      title: 'Novo Tênis de Corrida',
-      value: 310.76,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: 't2',
-      title: 'Conta de Luz',
-      value: 211.30,
-      date: DateTime.now(),
-    ),
-  ];
+  final List<Transaction> _transactions = [];
 
   _addTransaction(String title, double value) {
     final newTransaction = Transaction(
@@ -87,10 +78,11 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Despesas Pessoais'),
+        centerTitle: true,
+        title: const Text('Despesas Pessoais'),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.add),
+            icon: const Icon(Icons.add),
             onPressed: () => _openTransactionFormModal(context),
           ),
         ],
@@ -99,12 +91,12 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Container(
+            const SizedBox(
               width: double.infinity,
               child: Card(
                 color: Colors.blue,
-                child: Text('Gráfico'),
                 elevation: 5,
+                child: Text('Gráfico'),
               ),
             ),
             TransactionsList(_transactions),

@@ -10,7 +10,23 @@ class TransactionsList extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 300,
-      child: ListView.builder(
+      child: transactions.isEmpty 
+        ? Column(
+          children: <Widget>[
+            const SizedBox(height: 20),
+            Text(
+              'Sua lista está vazia',
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            const SizedBox(height: 20),
+            const Image(
+              image: AssetImage('assets/images/waiting.png'),
+              fit: BoxFit.cover,
+              height: 200.00,
+            )
+          ],
+        )
+        : ListView.builder(
         itemCount: transactions.length,
         itemBuilder: (ctx, index) {
           final tr = transactions[index];
@@ -30,7 +46,6 @@ class TransactionsList extends StatelessWidget {
                     'R\$ ${tr.value.toStringAsFixed(2)}',
                     style:  TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 20,
                       color: Theme.of(context).colorScheme.primary,
                     ),
                   ),
@@ -41,17 +56,11 @@ class TransactionsList extends StatelessWidget {
                   children: <Widget>[
                     Text(
                       tr.title,
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
+                      style: Theme.of(context).textTheme.titleLarge,
                     ),
                     Text(
                       DateFormat('d MM y').format(tr.date),
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
+                      style: Theme.of(context).textTheme.labelSmall,
                     ),
                   ],
                 ),
