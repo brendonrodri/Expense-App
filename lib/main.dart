@@ -2,7 +2,7 @@ import 'package:expense/Components/charts.dart';
 import 'package:flutter/material.dart';
 import 'package:expense/Models/transaction.dart';
 import './Components//transactions_list.dart';
-import 'package:expense/Components/transacton_form.dart';
+import 'package:expense/Components/transactions_form.dart';
 import 'dart:math';
 
 main() => runApp(ExpensesApp());
@@ -31,13 +31,13 @@ class ExpensesApp extends StatelessWidget {
                 fontSize: 14,
                 fontWeight: FontWeight.normal,
                 color: Color.fromARGB(255, 139, 34, 158))),
-        appBarTheme: const AppBarTheme(
-          titleTextStyle: TextStyle(
-            fontFamily: 'OpenSans',
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+            appBarTheme: const AppBarTheme(
+              titleTextStyle: TextStyle(
+                fontFamily: 'OpenSans',
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
       ),
     );
   }
@@ -49,26 +49,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Transaction> _transactions = [
-    Transaction(
-      id: 't0',
-      title: 'Conta Antiga ',
-      value: 310.76,
-      date: DateTime.now().subtract(const Duration(days: 33)),
-    ),
-    Transaction(
-      id: 't1',
-      title: 'Conta Nova',
-      value: 211.30,
-      date: DateTime.now().subtract(const Duration(days: 4)),
-    ),
-    Transaction(
-      id: 't3',
-      title: 'Conta de Luz',
-      value: 200.30,
-      date: DateTime.now().subtract(const Duration(days: 4)),
-    ),
-  ];
+  final List<Transaction> _transactions = [];
 
   List<Transaction> get _recentTransactions {
     return _transactions.where((tr) {
@@ -78,19 +59,24 @@ class _MyHomePageState extends State<MyHomePage> {
     }).toList();
   }
 
-  _addTransaction(String title, double value) {
+  _addTransaction(String title, double value, DateTime date) {
     final newTransaction = Transaction(
       id: Random().nextDouble().toString(),
       title: title,
       value: value,
-      date: DateTime.now(),
+      date: date,
     );
 
     setState(() {
       _transactions.add(newTransaction);
     });
-
     Navigator.of(context).pop();
+  }
+
+  _delete(String id) {
+    setState(() {
+      _transactions.removeWhere((tr) => tr.id == id);
+    });
   }
 
   _openTransactionFormModal(BuildContext context) {
@@ -119,13 +105,13 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-             Chart(_recentTransactions),
-            TransactionsList(_transactions),
+            Chart(_recentTransactions),
+            TransactionsList(_transactions, _delete),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
         onPressed: () => _openTransactionFormModal(context),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
